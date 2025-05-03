@@ -1,171 +1,142 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MiniSuperElAhorro</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <title>Mini Netflix</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .catalogo {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      padding: 20px;
+    }
+
+    .pelicula {
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .pelicula:hover {
+      transform: scale(1.05);
+    }
+
+    .pelicula img {
+      width: 100%;
+      border-radius: 5px;
+    }
+
+    .pelicula .titulo {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.7);
+      padding: 5px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    #reproductor {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    #reproductor video {
+      width: 100%;
+      max-height: 90vh;
+      background: #000;
+    }
+
+    #cerrar {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 30px;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      z-index: 1000;
+    }
+  </style>
 </head>
-<body class="bg-gray-100">
+<body>
 
-  <div id="app" class="p-4 max-w-6xl mx-auto"></div>
+<h1>Mi Mini Netflix</h1>
 
-  <script>
-    const app = document.getElementById("app");
+<div class="catalogo">
+  <div class="pelicula" onclick="reproducir('https://www.w3schools.com/html/mov_bbb.mp4')">
+    <img src="https://image.tmdb.org/t/p/w500/pOq9CvxM8u5DJzsnEAViU7DzO3T.jpg" alt="Pelicula 1">
+    <div class="titulo">Matrix</div>
+  </div>
+  <div class="pelicula" onclick="reproducir('https://www.w3schools.com/html/movie.mp4')">
+    <img src="https://image.tmdb.org/t/p/w500/ynrRJbohN3qhyDAkXfhTLf3Z5xC.jpg" alt="Pelicula 2">
+    <div class="titulo">Avengers</div>
+  </div>
+  <div class="pelicula" onclick="reproducir('https://www.w3schools.com/html/mov_bbb.mp4')">
+    <img src="https://image.tmdb.org/t/p/w500/2CAL2433ZeIihfX1Hb2139CX0pW.jpg" alt="Pelicula 3">
+    <div class="titulo">La La Land</div>
+  </div>
+  <div class="pelicula" onclick="reproducir('https://www.w3schools.com/html/movie.mp4')">
+    <img src="https://image.tmdb.org/t/p/w500/3nwa6WxH2zIjdEUMvVfFQ6dzYj2.jpg" alt="Pelicula 4">
+    <div class="titulo">Joker</div>
+  </div>
+  <div class="pelicula" onclick="reproducir('https://www.w3schools.com/html/mov_bbb.mp4')">
+    <img src="https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg" alt="Pelicula 5">
+    <div class="titulo">Inception</div>
+  </div>
+  <div class="pelicula" onclick="reproducir('https://www.w3schools.com/html/movie.mp4')">
+    <img src="https://image.tmdb.org/t/p/w500/m67smI1IIMmYzCl9axvKNULVKLr.jpg" alt="Pelicula 6">
+    <div class="titulo">Interstellar</div>
+  </div>
+</div>
 
-    const categorias = [
-      {
-        id: 1,
-        nombre: "Abarrotes",
-        imagen: "https://cdn-icons-png.flaticon.com/512/3185/3185822.png",
-        subcategorias: [
-          { nombre: "Arroz", imagen: "https://cdn-icons-png.flaticon.com/512/1046/1046849.png", precio: 30 },
-          { nombre: "Frijoles", imagen: "https://cdn-icons-png.flaticon.com/512/2909/2909765.png", precio: 28 }
-        ]
-      },
-      {
-        id: 2,
-        nombre: "Lácteos",
-        imagen: "https://cdn-icons-png.flaticon.com/512/1046/1046875.png",
-        subcategorias: [
-          { nombre: "Leche", imagen: "https://cdn-icons-png.flaticon.com/512/1046/1046875.png", precio: 22 },
-          { nombre: "Queso", imagen: "https://cdn-icons-png.flaticon.com/512/590/590685.png", precio: 18 },
-          { nombre: "Yogurt", imagen: "https://cdn-icons-png.flaticon.com/512/2909/2909775.png", precio: 12 },
-          { nombre: "Crema", imagen: "https://cdn-icons-png.flaticon.com/512/1046/1046871.png", precio: 10 },
-          { nombre: "Mantequilla", imagen: "https://cdn-icons-png.flaticon.com/512/619/619133.png", precio: 14 }
-        ]
-      },
-      {
-        id: 3,
-        nombre: "Huevos",
-        imagen: "https://cdn-icons-png.flaticon.com/512/1046/1046869.png",
-        subcategorias: [
-          { nombre: "Huevos blancos", imagen: "https://cdn-icons-png.flaticon.com/512/1046/1046869.png", precio: 45 },
-          { nombre: "Huevos rojos", imagen: "https://cdn-icons-png.flaticon.com/512/2382/2382466.png", precio: 50 }
-        ]
-      },
-      // 9 nuevas categorías "Próximamente"
-      ...Array.from({ length: 9 }, (_, i) => ({
-        id: 4 + i,
-        nombre: "Próximamente",
-        imagen: "https://cdn-icons-png.flaticon.com/512/1828/1828665.png", // X roja
-        subcategorias: []
-      }))
-    ];
+<div id="reproductor">
+  <button id="cerrar" onclick="cerrar()">✖</button>
+  <video id="video" controls autoplay>
+    <source src="" type="video/mp4">
+    Tu navegador no puede reproducir este video.
+  </video>
+</div>
 
-    let carrito = [];
-    let categoriaSeleccionada = null;
+<script>
+  function reproducir(url) {
+    const video = document.getElementById("video");
+    video.src = url;
+    document.getElementById("reproductor").style.display = "flex";
+    video.play();
+  }
 
-    function render() {
-      app.innerHTML = `
-        <h1 class="text-3xl font-bold text-center text-purple-700 animate-pulse mb-4">
-          MiniSuperElAhorro
-        </h1>
+  function cerrar() {
+    const video = document.getElementById("video");
+    video.pause();
+    video.src = "";
+    document.getElementById("reproductor").style.display = "none";
+  }
+</script>
 
-        ${categoriaSeleccionada ? renderSubcategorias() : renderCategorias()}
-        ${renderCarrito()}
-
-        <p class="mt-8 text-center text-sm text-gray-400">Creado por JuniorPocasangre</p>
-      `;
-    }
-
-    function renderCategorias() {
-      return `
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-          ${categorias.map((cat, idx) => `
-            <div class="border rounded-xl p-4 shadow bg-white text-center">
-              <img src="${cat.imagen}" class="w-full h-32 object-contain mb-2" />
-              <h2 class="text-lg font-semibold mb-2">${cat.nombre}</h2>
-              ${cat.subcategorias.length > 0 ? `<button onclick="verSubcategorias(${cat.id})" class="bg-purple-600 text-white px-4 py-1 rounded hover:bg-purple-700">Menú</button>` : ''}
-            </div>
-          `).join('')}
-        </div>
-      `;
-    }
-
-    function renderSubcategorias() {
-      const cat = categorias.find(c => c.id === categoriaSeleccionada);
-      return `
-        <div>
-          <h2 class="text-2xl font-bold text-purple-600 mb-4 text-center">${cat.nombre}</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-            ${cat.subcategorias.map((sub, idx) => `
-              <div class="border rounded-xl p-4 shadow bg-white text-center">
-                <img src="${sub.imagen}" class="w-full h-32 object-contain mb-2" />
-                <h3 class="font-semibold">${sub.nombre}</h3>
-                <p class="text-green-600 font-bold mb-2">Q${sub.precio}</p>
-                <div class="flex justify-center items-center gap-2 mb-2">
-                  <button onclick="cambiarCantidad(${cat.id}, ${idx}, -1)" class="bg-gray-300 px-2 rounded">−</button>
-                  <span id="cantidad-${cat.id}-${idx}">${sub.cantidad || 0}</span>
-                  <button onclick="cambiarCantidad(${cat.id}, ${idx}, 1)" class="bg-gray-300 px-2 rounded">+</button>
-                </div>
-                <button onclick="agregarAlCarrito('${sub.nombre}', ${sub.precio}, ${cat.id}, ${idx})" class="bg-purple-600 text-white px-4 py-1 rounded hover:bg-purple-700">Agregar</button>
-              </div>
-            `).join('')}
-          </div>
-          <div class="text-center">
-            <button onclick="volver()" class="bg-pink-500 text-white px-6 py-2 rounded hover:bg-pink-600">Volver a la página principal</button>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderCarrito() {
-      if (carrito.length === 0) return `<p class="text-gray-500 mt-6 text-center">Tu carrito está vacío</p>`;
-      const total = carrito.reduce((sum, p) => sum + p.precio * p.cantidad, 0);
-      return `
-        <div class="bg-white p-4 mt-6 border rounded shadow">
-          <h2 class="text-xl font-bold mb-2">Carrito de compras</h2>
-          ${carrito.map((item, i) => `
-            <div class="flex justify-between items-center mb-2">
-              <p>• ${item.nombre} x ${item.cantidad} = Q${item.precio * item.cantidad}</p>
-              <button onclick="eliminarDelCarrito(${i})" class="text-red-500 hover:underline text-sm">Eliminar</button>
-            </div>
-          `).join('')}
-          <p class="font-semibold mt-2">Total: Q${total}</p>
-          <button onclick="enviarPedido()" class="mt-4 bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700">Enviar pedido</button>
-        </div>
-      `;
-    }
-
-    function verSubcategorias(id) {
-      categoriaSeleccionada = id;
-      render();
-    }
-
-    function volver() {
-      categoriaSeleccionada = null;
-      render();
-    }
-
-    function cambiarCantidad(catId, subIdx, delta) {
-      const sub = categorias.find(c => c.id === catId).subcategorias[subIdx];
-      sub.cantidad = Math.max(0, Math.min((sub.cantidad || 0) + delta, 150));
-      document.getElementById(`cantidad-${catId}-${subIdx}`).textContent = sub.cantidad;
-    }
-
-    function agregarAlCarrito(nombre, precio, catId, subIdx) {
-      const cantidad = categorias.find(c => c.id === catId).subcategorias[subIdx].cantidad || 0;
-      if (cantidad === 0) return alert("Selecciona al menos 1 unidad");
-      carrito.push({ nombre, precio, cantidad });
-      categorias.find(c => c.id === catId).subcategorias[subIdx].cantidad = 0;
-      render();
-    }
-
-    function eliminarDelCarrito(idx) {
-      carrito.splice(idx, 1);
-      render();
-    }
-
-    function enviarPedido() {
-      if (carrito.length === 0) return alert("Tu carrito está vacío");
-      const resumen = carrito.map(p => `• ${p.nombre} x ${p.cantidad} = Q${p.precio * p.cantidad}`).join("%0A");
-      const total = carrito.reduce((sum, p) => sum + p.precio * p.cantidad, 0);
-      const mensaje = `Nuevo pedido en MiniSuperElAhorro:%0A${resumen}%0A%0ATotal: Q${total}`;
-      window.open(`https://wa.me/50238123719?text=${mensaje}`, "_blank");
-    }
-
-    render();
-  </script>
 </body>
 </html>
