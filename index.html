@@ -1,9 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <title>Mini Netflix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * { box-sizing: border-box; }
     body {
@@ -54,89 +54,4 @@
     #reproductor {
       position: fixed;
       top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
-
-    #reproductor video {
-      width: 100%;
-      max-height: 90vh;
-      background: #000;
-    }
-
-    #cerrar {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 30px;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      z-index: 1000;
-    }
-  </style>
-</head>
-<body>
-
-<h1>Mi Mini Netflix</h1>
-
-<div class="catalogo">
-  <div class="pelicula" onclick="reproducir('https://www.w3schools.com/html/mov_bbb.mp4')">
-    <img src="https://image.tmdb.org/t/p/w500/pOq9CvxM8u5DJzsnEAViU7DzO3T.jpg" alt="Pelicula 1">
-    <div class="titulo">Matrix</div>
-  </div>
-  <div class="pelicula" onclick="reproducir('https://www.w3schools.com/html/movie.mp4')">
-    <img src="https://image.tmdb.org/t/p/w500/ynrRJbohN3qhyDAkXfhTLf3Z5xC.jpg" alt="Pelicula 2">
-    <div class="titulo">Avengers</div>
-  </div>
-  <div class="pelicula" onclick="reproducir('https://www.w3schools.com/html/mov_bbb.mp4')">
-    <img src="https://image.tmdb.org/t/p/w500/2CAL2433ZeIihfX1Hb2139CX0pW.jpg" alt="Pelicula 3">
-    <div class="titulo">La La Land</div>
-  </div>
-  <div class="pelicula" onclick="reproducir('https://www.w3schools.com/html/movie.mp4')">
-    <img src="https://image.tmdb.org/t/p/w500/3nwa6WxH2zIjdEUMvVfFQ6dzYj2.jpg" alt="Pelicula 4">
-    <div class="titulo">Joker</div>
-  </div>
-  <div class="pelicula" onclick="reproducir('https://www.w3schools.com/html/mov_bbb.mp4')">
-    <img src="https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg" alt="Pelicula 5">
-    <div class="titulo">Inception</div>
-  </div>
-  <div class="pelicula" onclick="reproducir('https://www.w3schools.com/html/movie.mp4')">
-    <img src="https://image.tmdb.org/t/p/w500/m67smI1IIMmYzCl9axvKNULVKLr.jpg" alt="Pelicula 6">
-    <div class="titulo">Interstellar</div>
-  </div>
-</div>
-
-<div id="reproductor">
-  <button id="cerrar" onclick="cerrar()">✖</button>
-  <video id="video" controls autoplay>
-    <source src="" type="video/mp4">
-    Tu navegador no puede reproducir este video.
-  </video>
-</div>
-
-<script>
-  function reproducir(url) {
-    const video = document.getElementById("video");
-    video.src = url;
-    document.getElementById("reproductor").style.display = "flex";
-    video.play();
-  }
-
-  function cerrar() {
-    const video = document.getElementById("video");
-    video.pause();
-    video.src = "";
-    document.getElementById("reproductor").style.display = "none";
-  }
-</script>
-
-</body>
-</html>
+      width: 100
